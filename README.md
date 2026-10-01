@@ -3,23 +3,14 @@ Davis Monsalvez  dav.monsalvez@duocuc.cl
 Vicente Jaramillo  vic.jaramillo@duocuc.cl
 
 Caso: Clinica Nutrivida
-Descripcion:
+
+Descripcion del caso: NutriVida es una clínica nutricional de Temuco, con 4 nutricionistas y unos 60 pacientes por semana, que hoy agenda sus citas y registra el progreso de los pacientes en papel. Eso genera desorden y un 20% de inasistencia. La aplicación web busca digitalizar el agendamiento de citas y el seguimiento de cada paciente, con acceso por roles (administrador, nutricionista y paciente) para que los datos clínicos solo los vea el paciente y su nutricionista.
 
 
 
 
 
 
-
-
-
-
-
-
-Nombre del equipo.
-Integrantes: nombre completo y correo institucional de cada uno.
-Caso: cuál de los tres casos del semestre están desarrollando (Huerto Hogar, Level-Up Gamer o Pastelería Mil Sabadores).
-Descripción del caso: 3 a 4 líneas explicando el negocio y qué resuelve la aplicación.
 Estructura del proyecto: el árbol de carpetas de src organizado por Atomic Design (atoms, molecules, organisms, templates, pages).
 Tecnologías utilizadas: React, Vite, React Bootstrap y cualquier otra librería que agreguen.
 Cómo ejecutar el proyecto: los comandos exactos, por ejemplo npm install y npm run dev.
