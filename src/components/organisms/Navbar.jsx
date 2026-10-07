@@ -1,23 +1,29 @@
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import NavbarBS from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
-import { NavLink } from 'react-router-dom';
+import Nav from 'react-bootstrap/Nav';
 
-function BarraNavegacion() {
-    return (
-        <Navbar bg="success" variant="dark" expand="md" sticky="top">
-            <Container>
-                <Navbar.Brand as={NavLink} to="/">NutriVida</Navbar.Brand>
-                <Navbar.Toggle aria-controls="menu-principal" />
-                <Navbar.Collapse id="menu-principal">
-                    <Nav className="ms-auto">
-                        <Nav.Link as={NavLink} to="/" end>Inicio</Nav.Link>
-                        <Nav.Link as={NavLink} to="/catalogo">Catálogo</Nav.Link>
-                    </Nav>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
-    );
+function Navbar(props) {
+  const marca = props.marca || "Mi Aplicación";
+  const variante = props.variante || "dark";
+  const bg = props.bg || "primary";
+
+  return (
+    <NavbarBS bg={bg} variant={variante} expand="lg" className="shadow-sm">
+      <Container>
+        <NavbarBS.Brand href="#home" className="fw-bold">
+          {marca}
+        </NavbarBS.Brand>
+        <NavbarBS.Toggle aria-controls="menu-navegacion" />
+        <NavbarBS.Collapse id="menu-navegacion">
+          <Nav className="ms-auto">
+            <Nav.Link href="#inicio">Inicio</Nav.Link>
+            <Nav.Link href="#catalogo">Catálogo</Nav.Link>
+            <Nav.Link href="#contacto">Contacto</Nav.Link>
+          </Nav>
+        </NavbarBS.Collapse>
+      </Container>
+    </NavbarBS>
+  );
 }
 
-export default BarraNavegacion;
+export default Navbar;
