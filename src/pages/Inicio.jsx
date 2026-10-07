@@ -7,7 +7,7 @@ function Inicio() {
     <Container className="mt-5">
       <Row className="justify-content-center">
         <Col md={6}>
-          {/*Agregar un título de bienvenida aquí */}
+          <h1 className="text-center">Bienvenido a la Clínica</h1>
           {/*Agregar textos descriptivos o cambiar los colores/sombras */}
           
           <LoginTemplate>
