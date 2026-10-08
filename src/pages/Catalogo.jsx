@@ -2,12 +2,12 @@ import { Container, Row, Col } from "react-bootstrap";
 import TarjetaCatalogo from "../components/molecules/TarjetaCatalogo";
 
 function Catalogo(props) {
-  //Crear aquí la función alAgendar(nombre)
-
+  function alAgendar(nombre) {
+    alert(`Agendando servicio: ${nombre}`);
+  }
   return (
     <Container className="mt-5">
-      {/*Agregar el título h2 de "Catálogo de Servicios" aquí */}
-      
+      <h2 className="text-center mb-4">Catálogo de Servicios</h2>
       <Row>
         {props.servicios && props.servicios.map((s) => (
           <Col key={s.id} sm={12} md={4}>
