@@ -1,5 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import TarjetaCatalogo from "../components/molecules/TarjetaCatalogo";
+import PlantillaPublica from "../components/templates/PlantillaPublica";
 
 function Catalogo(props) {
   function alAgendar(nombre) {
