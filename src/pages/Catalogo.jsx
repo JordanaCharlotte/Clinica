@@ -1,4 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
+import TarjetaCatalogo from "../components/molecules/TarjetaCatalogo";
 
 function Catalogo(props) {
   //Crear aquí la función alAgendar(nombre)
@@ -11,13 +12,18 @@ function Catalogo(props) {
         {props.servicios && props.servicios.map((s) => (
           <Col key={s.id} sm={12} md={4}>
             {/*Cambiar este div feo por su componente <Tarjeta> */}
-            {/*Pasarle a la Tarjeta los props (nombre, especie, onSeguir) */}
-            <div className="border p-2 mb-3">
-              <p>{s.nombre}</p>
-            </div>
+            <TarjetaCatalogo
+              categoria={s.categoria}
+              nombre={s.nombre}
+              descripcion={s.descripcion}
+              precio={s.precio}
+              onAgendar={() => console.log(s.nombre)}
+            />
           </Col>
         ))}
       </Row>
     </Container>
   );
 }
+
+export default Catalogo;
