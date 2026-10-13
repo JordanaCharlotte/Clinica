@@ -1,21 +1,37 @@
 import Form from 'react-bootstrap/Form';
-import CampoFormulario from '../molecules/CampoFormulario';
+import { useNavigate } from 'react-router-dom';
+import { CampoFormulario } from '../molecules/CampoFormulario';
 import Boton from '../atoms/Boton';
+import { useState } from 'react';
 
 function LoginForm() {
+    const navegar = useNavigate();
+    const [correo, setCorreo] = useState('');
+    const [nombre, setNombre] = useState('');
+
+
+    function manejarEnvio(e) {
+        e.preventDefault();
+        navegar('/catalogo');
+    }
+
     return (
-        <Form onSubmit={(e) => e.preventDefault()}>
+        <Form onSubmit={manejarEnvio}>
             <CampoFormulario
                 controlId="correo"
                 label="Correo"
-                type="email"
-                placeholder="tucorreo@ejemplo.com"
+                tipo="email"
+                valor={correo}
+                onChange={setCorreo}
+                error=""
             />
             <CampoFormulario
-                controlId="Nombre"
-                label="Nombre"
-                type="text"
-                placeholder="Tu nombre"
+                controlId="correo"
+                label="Correo"
+                tipo="text"
+                valor={nombre}
+                onChange={setNombre}
+                error=""
             />
             <Boton texto="Continuar" />
         </Form>
