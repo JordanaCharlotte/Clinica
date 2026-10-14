@@ -11,10 +11,14 @@ function CampoFormulario(props) {
                 value={props.value}
                 onChange={props.onChange}
             />
+            {/* Si props.error tiene texto, se muestra en rojo debajo del input */}
+            {props.error && (
+                <Form.Text className="text-danger">
+                    {props.error}
+                </Form.Text>
+            )}
         </Form.Group>
     );
 }
 
 export default CampoFormulario;
-
-
