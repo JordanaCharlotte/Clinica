@@ -3,7 +3,7 @@ import Navbar from '../organisms/Navbar'
 import Footer from '../organisms/Footer'
 
 
-export function PlantillaPublica(props) {
+function PlantillaPublica(props) {
   const navigate = useNavigate()
 
   return (
@@ -19,3 +19,5 @@ export function PlantillaPublica(props) {
     </>
   )
 }
+
+export default PlantillaPublica;
