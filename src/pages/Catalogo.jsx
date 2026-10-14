@@ -23,7 +23,7 @@ function Catalogo({ servicios }) {
         Catálogo de Servicios
       </h2>
 
-      {/*Si no hay resultados para esa categoria, muestra un mensaje */}
+      {/* Si no hay resultados para esa categoria, muestra un mensaje */}
       {serviciosMostrados.length === 0 ? (
         <p className="text-center">No hay servicios en esta categoría.</p>
       ) : (
