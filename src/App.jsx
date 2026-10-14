@@ -9,6 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Inicio />} />
         <Route path="/catalogo" element={<Catalogo servicios={servicios} />} />
+        <Route path="/categoria/:nombre" element={<Catalogo servicios={servicios} />} />
       </Routes>
     </BrowserRouter>
   );
