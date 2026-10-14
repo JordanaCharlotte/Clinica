@@ -1,7 +1,8 @@
 function Boton(props) {
     const variante = props.variante || "primary";
+    const tipo = props.type || "button";
     return (
-        <button className={`btn btn-${variante}`} onClick={props.onClick}>
+        <button type={tipo} className={`btn btn-${variante}`} onClick={props.onClick}>
             {props.texto}
         </button>
     );
