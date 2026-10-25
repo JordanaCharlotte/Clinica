@@ -6,6 +6,7 @@ import FiltroCategorias from '../components/molecules/FiltroCategorias'
 import ListaServicios from '../components/organisms/ListaServicios'
 import { PlantillaPublica } from '../components/templates/PlantillaPublica'
 import { useServicios } from '../context/ServiciosContext'
+import { useCita } from '../context/CitaContext'
 import { obtenerCategorias } from '../utils/categorias'
 import { filtrarServicios } from '../utils/filtrarServicios'
 
@@ -13,6 +14,8 @@ function Catalogo() {
   const navigate = useNavigate()
   const { nombre = '' } = useParams()
   const { servicios } = useServicios()
+  // useCita puede ser null en las pruebas (sin CitaProvider), por eso el ?.
+  const cita = useCita()
   const [busqueda, setBusqueda] = useState('')
   const [categoria, setCategoria] = useState(nombre)
 
@@ -51,7 +54,10 @@ function Catalogo() {
           servicios={serviciosFiltrados}
           mensajeVacio="No encontramos servicios con esa búsqueda."
           onVerDetalle={(id) => navigate(`/servicio/${id}`)}
-          onAgendar={() => navigate('/agendar')}
+          onAgendar={(servicio) => {
+            cita?.actualizarCita({ servicioId: servicio.id })
+            navigate('/agendar')
+          }}
         />
       </Container>
     </PlantillaPublica>

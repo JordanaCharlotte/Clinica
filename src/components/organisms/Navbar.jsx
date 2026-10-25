@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 
 function Navbar(props) {
-  const marca = props.marca || "Mi Aplicación";
+  const marca = props.marca || "NutriVida";
   const variante = props.variante || "dark";
   const bg = props.bg || "primary";
 
@@ -25,8 +25,11 @@ function Navbar(props) {
             <Nav.Link href="/catalogo" onClick={(e) => ir(e, '/catalogo')}>Catálogo</Nav.Link>
             <Nav.Link href="/nutricionistas" onClick={(e) => ir(e, '/nutricionistas')}>Nutricionistas</Nav.Link>
             <Nav.Link href="/agendar" onClick={(e) => ir(e, '/agendar')}>Agendar cita</Nav.Link>
+            <Nav.Link href="/nosotros" onClick={(e) => ir(e, '/nosotros')}>Nosotros</Nav.Link>
+            <Nav.Link href="/blog" onClick={(e) => ir(e, '/blog')}>Blog</Nav.Link>
             <Nav.Link href="/contacto" onClick={(e) => ir(e, '/contacto')}>Contacto</Nav.Link>
           </Nav>
+          {props.children && <div className="ms-lg-3">{props.children}</div>}
         </NavbarBS.Collapse>
       </Container>
     </NavbarBS>
