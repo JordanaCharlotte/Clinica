@@ -50,9 +50,8 @@ function Confirmacion() {
         }
 
         //aca la regla de teleconsulta: solo se revisa si el correo es valid
-        const errR = errC === validarTeleconsulta(servicio.id, citasDeUsuario(correo))
-        setErrorRegla(errR)
-        if (errN !== '') {
+        const errR = validarTeleconsulta(servicio.codigo, citasDeUsuario(correo))
+        if (errR !== '') {
             return
         }
         
@@ -68,7 +67,7 @@ function Confirmacion() {
         })
         reiniciarCita()
         //el id viaja en la direccion: /resultado/3
-        navigate('/resultado/${cita.id}')
+        navigate(`/resultado/${cita.id}`)
     }
 
     return (
