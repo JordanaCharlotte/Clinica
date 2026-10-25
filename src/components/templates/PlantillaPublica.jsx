@@ -3,7 +3,7 @@ import Navbar from '../organisms/Navbar'
 import Footer from '../organisms/Footer'
 
 
-function PlantillaPublica(props) {
+export function PlantillaPublica(props) {
   const navigate = useNavigate()
 
   return (
@@ -12,8 +12,7 @@ function PlantillaPublica(props) {
         onNavegar={navigate}
       />
       <main className="contenido">
-        {/* props.children es el contenido que cada página pone dentro de <PlantillaPublica> */}
-        {props.children}
+      {props.children}
       </main>
       <Footer onNavegar={navigate} />
     </>
