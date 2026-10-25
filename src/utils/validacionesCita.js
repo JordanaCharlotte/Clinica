@@ -1,5 +1,5 @@
 export function validarObligatorio(valor, mensaje) {
-    return valor.trim() === '' ? mensaje : ''
+    return String(valor ?? '').trim() === '' ? mensaje : ''
 }
 
 export function validarCorreo(correo) {
