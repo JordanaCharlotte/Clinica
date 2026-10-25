@@ -1,4 +1,4 @@
-//datos de ejemplo este despues tenemos que poner los del excel
+
 
 const nutricionistas = [
     { id: "N01", nombre: "Camila Rojas", especialidad: "Nutrición clínica", descripcion: "Control de peso y enfermedades crónicas." },

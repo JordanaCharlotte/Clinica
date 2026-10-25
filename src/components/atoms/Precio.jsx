@@ -1,16 +1,20 @@
-import { formatoPrecio } from '../../../utils/formatoPrecio'
+import formatoPrecio from '../../utils/formatoPrecio'
 
-// Átomo: muestra un precio. Si hay un precio anterior mayor, lo muestra tachado.
 export function Precio(props) {
-  const anterior = props.anterior ?? null
-  const enOferta = anterior !== null && anterior > props.valor
+  // Como props.valor ya viene listo como "$35.000", lo usamos directamente.
+  // Si por alguna razón viene vacío, mostramos "$0" como respaldo.
+  const precioActualFormateado = props.valor || "$0";
+  
+  // Hacemos lo mismo para el precio anterior si es que existe
+  const anterior = props.anterior ?? null;
+  const enOferta = anterior !== null;
 
   return (
     <p className="precio mb-2">
-      <span className="precio__actual">{formatoPrecio(props.valor)}</span>
+      <span className="precio__actual">{precioActualFormateado}</span>
       {enOferta && (
-        <span className="precio__anterior ms-2" aria-label="Precio anterior">  //REVISAR//
-          <s>{formatoPrecio(anterior)}</s>
+        <span className="precio__anterior ms-2" aria-label="Precio anterior">
+          <s>{anterior}</s>
         </span>
       )}
     </p>

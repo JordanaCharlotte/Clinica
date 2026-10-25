@@ -9,7 +9,6 @@ function Inicio() {
       <Container className="mt-5">
         <Row className="justify-content-center">
           <Col md={6}>
-            {/*Agregar un título de bienvenida aquí */}
             <h2 
               className="text-center mb-3" 
               style={{ color: "var(--text-h)"}}
@@ -17,7 +16,6 @@ function Inicio() {
               Bienvenido a <span style={{ color: "var(--accent)" }}>NutriVida</span>
             </h2>
 
-            {/*Agregar textos descriptivos o cambiar los colores/sombras */}
             <p 
               className="text-center mb-4" 
               style={{ color: "var(--text)" }}

@@ -2,8 +2,8 @@ import { Row, Col } from 'react-bootstrap';
 import TarjetaCatalogo from '../molecules/TarjetaCatalogo';
 
 
-function ListaServicio(props) {
-    if (props.servicio.length === 0) {
+function ListaServicios(props) {
+    if (props.servicios.length === 0) {
         return (
             <p className="text-center text-muted">
                 {props.mensajeVacio ?? 'No hay servicios para mostrar.'}
