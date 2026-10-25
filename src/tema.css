@@ -1,0 +1,351 @@
+/* Tema visual de NutriVida sobre Bootstrap 5.3.
+   Se importa en main.jsx DESPUÉS de bootstrap.min.css e index.css. */
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700;800&display=swap');
+
+:root {
+  /* Paleta */
+  --marca: #1f6f5c;          /* verde hoja: color principal */
+  --marca-oscuro: #17574a;
+  --marca-claro: #e3f2ec;    /* menta para franjas */
+  --noche: #0e2a3b;          /* azul noche: barra superior, cierre y pie */
+  --acento: #f28c28;         /* mandarina: solo para "Agenda tu hora" */
+  --acento-oscuro: #d9761a;
+  --fondo: #f7faf8;
+
+  --bs-font-sans-serif: 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --bs-body-color: #22343f;
+  --bs-primary: var(--marca);
+  --bs-primary-rgb: 31, 111, 92;
+  --bs-primary-bg-subtle: var(--marca-claro);
+  --bs-primary-text-emphasis: var(--marca-oscuro);
+  --bs-link-color: var(--marca);
+  --bs-link-color-rgb: 31, 111, 92;
+  --bs-link-hover-color: var(--marca-oscuro);
+  --bs-link-hover-color-rgb: 23, 87, 74;
+  --bs-body-bg: var(--fondo);
+  --bs-body-bg-rgb: 247, 250, 248;
+  --bs-tertiary-bg: var(--marca-claro);
+  --bs-tertiary-bg-rgb: 227, 242, 236;
+  --bs-success: var(--marca);
+  --bs-success-rgb: 31, 111, 92;
+  --bs-success-text-emphasis: var(--marca-oscuro);
+  --bs-success-bg-subtle: var(--marca-claro);
+}
+
+body {
+  background-color: var(--fondo);
+  font-family: var(--bs-font-sans-serif);
+}
+
+h1, h2, h3, .h1, .h2, .h3 {
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--noche);
+}
+h4, h5, h6, .h4, .h5, .h6 {
+  font-weight: 700;
+  color: var(--noche);
+}
+
+/* ---------- Barra superior ---------- */
+.barra-superior {
+  background: var(--noche);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.9rem;
+  padding: 0.4rem 0;
+}
+.barra-superior a:not(.btn) {
+  color: #fff;
+  text-decoration: none;
+}
+.barra-superior a:not(.btn):hover {
+  text-decoration: underline;
+}
+
+/* ---------- Navbar ---------- */
+.navbar.bg-primary {
+  background: var(--marca) !important;
+}
+.navbar-brand {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Botones ---------- */
+.btn-primary,
+.btn-success {
+  --bs-btn-bg: var(--marca);
+  --bs-btn-border-color: var(--marca);
+  --bs-btn-hover-bg: var(--marca-oscuro);
+  --bs-btn-hover-border-color: var(--marca-oscuro);
+  --bs-btn-active-bg: var(--marca-oscuro);
+  --bs-btn-active-border-color: var(--marca-oscuro);
+  --bs-btn-disabled-bg: var(--marca);
+  --bs-btn-disabled-border-color: var(--marca);
+}
+.btn-outline-primary,
+.btn-outline-success,
+.btn-info,
+.btn-outline-info {
+  --bs-btn-color: var(--marca);
+  --bs-btn-bg: transparent;
+  --bs-btn-border-color: var(--marca);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--marca);
+  --bs-btn-hover-border-color: var(--marca);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--marca-oscuro);
+  --bs-btn-active-border-color: var(--marca-oscuro);
+}
+/* Mandarina con texto azul noche: el contraste con blanco no alcanza. */
+.btn-acento {
+  --bs-btn-color: var(--noche);
+  --bs-btn-bg: var(--acento);
+  --bs-btn-border-color: var(--acento);
+  --bs-btn-hover-color: var(--noche);
+  --bs-btn-hover-bg: #f5a04c;
+  --bs-btn-hover-border-color: #f5a04c;
+  --bs-btn-active-color: var(--noche);
+  --bs-btn-active-bg: var(--acento-oscuro);
+  --bs-btn-active-border-color: var(--acento-oscuro);
+  --bs-btn-focus-shadow-rgb: 242, 140, 40;
+  font-weight: 700;
+}
+.btn-oscuro {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--noche);
+  --bs-btn-border-color: var(--noche);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #183d52;
+  --bs-btn-hover-border-color: #183d52;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #183d52;
+  --bs-btn-active-border-color: #183d52;
+}
+.nav-pills {
+  --bs-nav-pills-link-active-bg: var(--marca);
+}
+
+/* ---------- Etiquetas (bg-info) = menta de la marca ---------- */
+.badge.bg-info,
+.badge.text-bg-info,
+.text-bg-info {
+  background-color: var(--marca-claro) !important;
+  color: var(--marca-oscuro) !important;
+  font-weight: 700;
+}
+
+/* ---------- Hero del Home ---------- */
+.hero-nutrivida {
+  background: linear-gradient(115deg, var(--marca) 0%, #185a4b 45%, var(--noche) 100%);
+  color: #fff;
+  padding: 3.5rem 0 3rem;
+}
+.hero-titulo {
+  color: #fff;
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  max-width: 14ch;
+  margin: 0 auto 1rem;
+}
+.hero-texto {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 44ch;
+  margin: 0 auto 1.75rem;
+}
+@media (min-width: 992px) {
+  .hero-titulo,
+  .hero-texto {
+    margin-left: 0;
+  }
+}
+.hero-figura {
+  text-align: center;
+}
+.hero-plato {
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+}
+.leyenda-plato {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.25rem;
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+.punto {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  margin-right: 0.4rem;
+  vertical-align: middle;
+}
+.punto-verde { background: #6dbe8c; }
+.punto-salmon { background: #f3b391; }
+.punto-trigo { background: #f2d27a; }
+
+/* ---------- Encabezado de páginas interiores ---------- */
+.encabezado-pagina {
+  background: linear-gradient(115deg, var(--marca) 0%, #185a4b 50%, var(--noche) 100%);
+  color: #fff;
+  padding: 2.25rem 0 2rem;
+}
+.encabezado-titulo {
+  color: #fff;
+  font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-bottom: 0.4rem;
+}
+.encabezado-bajada {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.1rem;
+  max-width: 60ch;
+  margin-bottom: 0;
+}
+.encabezado-pagina .breadcrumb {
+  --bs-breadcrumb-divider-color: rgba(255, 255, 255, 0.6);
+  --bs-breadcrumb-item-active-color: rgba(255, 255, 255, 0.75);
+  font-size: 0.9rem;
+}
+.encabezado-pagina .breadcrumb a {
+  color: #fff;
+}
+/* Las páginas que ya traían su propio título no lo repiten. */
+.encabezado-pagina.oculta-titulo + .contenido > .container:first-child > h2:first-child {
+  display: none;
+}
+
+/* ---------- Franjas ---------- */
+.franja-menta {
+  background: var(--marca-claro);
+  padding: 2rem 0;
+}
+.franja-blanca {
+  background: #fff;
+}
+.cierre-oscuro {
+  background: var(--noche);
+  color: rgba(255, 255, 255, 0.85);
+  padding: 2.5rem 0;
+}
+.cierre-oscuro h2 {
+  color: #fff;
+}
+.enlace-seccion {
+  font-weight: 700;
+  text-decoration: none;
+}
+.enlace-seccion:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Pasos (es una secuencia real, por eso van numerados) ---------- */
+.paso {
+  border-top: 4px solid var(--marca);
+  background: #fff;
+  border-radius: 0 0 0.75rem 0.75rem;
+  padding: 1.5rem;
+}
+.paso-numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--marca-claro);
+  color: var(--marca-oscuro);
+  font-weight: 800;
+}
+
+/* ---------- Áreas de atención ---------- */
+.area {
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: var(--fondo);
+}
+.area-icono {
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0.6rem;
+  border-radius: 0.75rem;
+  background: var(--marca);
+  color: #fff;
+}
+
+/* ---------- Tarjetas e inputs ---------- */
+.card {
+  --bs-card-bg: #fff;
+  border: 1px solid #e1ebe6;
+  border-radius: 0.75rem;
+}
+.precio-destacado {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--marca-oscuro);
+}
+.form-control,
+.form-select {
+  background-color: #fff;
+}
+
+/* ---------- Panel admin ---------- */
+header.navbar.bg-dark {
+  background: var(--noche) !important;
+}
+.tarjeta-metrica {
+  border-left: 4px solid var(--marca);
+}
+.row > div:nth-child(2) > .tarjeta-metrica { border-left-color: #3e9466; }
+.row > div:nth-child(3) > .tarjeta-metrica { border-left-color: var(--acento); }
+.row > div:nth-child(4) > .tarjeta-metrica { border-left-color: var(--noche); }
+.table > thead {
+  --bs-table-bg: var(--marca-claro);
+}
+
+/* ---------- Pie de página ---------- */
+footer.bg-dark {
+  background-color: var(--noche) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Foco visible para teclado */
+.btn:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--acento);
+  outline-offset: 2px;
+}
+
+/* Anula el layout de la plantilla de Vite (index.css): ancho fijo,
+   centrado y bordes laterales. La app ocupa todo el ancho de la pantalla. */
+#root {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  text-align: start;
+}
+
+/* Cuerpo sin el centrado de Vite. Oculta el cursor de "exploración con cursor"
+   del navegador en el texto, pero lo mantiene donde sí se escribe. */
+body {
+  display: block;
+  place-items: initial;
+  margin: 0;
+  caret-color: transparent;
+}
+input,
+textarea,
+[contenteditable='true'] {
+  caret-color: auto;
+}

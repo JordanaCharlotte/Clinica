@@ -1,6 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../organisms/Navbar'
 import Footer from '../organisms/Footer'
+import NavbarSesion from '../molecules/NavbarSesion'
+import BarraSuperior from '../molecules/BarraSuperior'
+import EncabezadoPagina from '../organisms/EncabezadoPagina'
 
 
 export function PlantillaPublica(props) {
@@ -8,7 +11,11 @@ export function PlantillaPublica(props) {
 
   return (
     <>
-      <Navbar onNavegar={navigate}/>
+      <BarraSuperior />
+      <Navbar onNavegar={navigate}>
+        <NavbarSesion />
+      </Navbar>
+      <EncabezadoPagina />
       <main className="contenido">
       {props.children}
       </main>
