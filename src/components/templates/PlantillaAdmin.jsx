@@ -4,12 +4,11 @@ import { useAuth } from '../../context/AuthContext';
 
 // Menú del panel. Las rutas de Davis y Vicente están aquí para que todo el
 // admin comparta el mismo layout; si usan otra URL, cambiarla en esta lista.
-// Descomentar cada enlace cuando exista su página en App.jsx.
 const ENLACES = [
   { to: '/admin', texto: 'Dashboard', exacto: true },
-  // { to: '/admin/catalogo', texto: 'Catálogo' },        // Davis
-  // { to: '/admin/categorias', texto: 'Categorías' },    // Davis
-  // { to: '/admin/criticos', texto: 'Ítems críticos' },  // Davis
+  { to: '/admin/catalogo', texto: 'Catálogo' },        
+  { to: '/admin/categorias', texto: 'Categorías' },    
+  { to: '/admin/criticos', texto: 'Ítems críticos' },  
   { to: '/admin/citas', texto: 'Solicitudes' },
   { to: '/admin/historial', texto: 'Historial' },
   { to: '/admin/usuarios', texto: 'Usuarios' },

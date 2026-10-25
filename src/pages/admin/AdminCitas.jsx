@@ -1,21 +1,36 @@
 import { useState } from 'react'
 import { Button, Table } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import PlantillaAdmin from '../../components/templates/PlantillaAdmin'
-import {obtenerCitas, modificarCita} from '../../services/citaService'
+import {obtenerCitas, modificarCita, reprogramarCita,} from '../../services/citaService'
 import EtiquetaEstadoCita from '../../components/atoms/EtiquetaEstadoCita'
 
 function AdminCitas() {
     const navigate = useNavigate()
     const [citas, setCitas] = useState(() => obtenerCitas())
+    const [fechaNueva, setFechaNueva] = useState('')
+    const [horaNueva, setHoraNueva] = useState('')
+
 
     function cambiarEstado(id, estado) {
         modificarCita(id, { estado })
         setCitas(obtenerCitas())
+        
     }
 
+    function cambiarFechaHora(id) {
+    if (!fechaNueva || !horaNueva) {
+        return
+    }
+
+    reprogramarCita(id, fechaNueva, horaNueva)
+    setCitas(obtenerCitas())
+    setFechaNueva('')
+    setHoraNueva('')
+}
+
     return (
-        <PlantillaAdmin titulo="Solicitudes de citas">
+        <>
+        <h1 className="h3 mb-4">Solicitudes de citas</h1>
             {citas.length === 0 ? (
                 <p>No hay solicitudes registradas.</p>
             ) : (
@@ -82,13 +97,37 @@ function AdminCitas() {
                                     >
                                         Cancelar
                                     </Button>
+
+                                    <div className="mt-2">
+                                        <input
+                                            type="date"
+                                            className="form-control form-control-sm mb-1"
+                                            value={fechaNueva}
+                                            onChange={(e) => setFechaNueva(e.target.value)}
+                                        />
+
+                                        <input
+                                            type="time"
+                                            className="form-control form-control-sm mb-1"
+                                            value={horaNueva}
+                                            onChange={(e) => setHoraNueva(e.target.value)}
+                                        />
+
+                                        <Button
+                                            size="sm"
+                                            variant="secondary"
+                                            onClick={() => cambiarFechaHora(cita.id)}
+                                        >
+                                            Reprogramar
+                                        </Button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </Table>
             )}
-        </PlantillaAdmin>
+        </>
     )
 }
 

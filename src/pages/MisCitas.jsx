@@ -1,16 +1,21 @@
 import { Table } from 'react-bootstrap'
 import PlantillaPublica from '../components/templates/PlantillaPublica'
+import { useAuth } from '../context/AuthContext'
 import { citasDeUsuario } from '../services/citaService'
 
 function MisCitas() {
-    const correo = 'usuario@correo.cl'
-    const citas = citasDeUsuario(correo)
+    const { usuario } = useAuth()
+    const citas = usuario ? citasDeUsuario(usuario.correo) : []
 
     return (
         <PlantillaPublica>
             <div className="container mt-5">
                 <h2>Mis citas</h2>
-                {citas.length === 0 ? (
+                <h2>Mis citas</h2>
+
+                {!usuario ? (
+                    <p>Debes iniciar sesión para ver tus citas.</p>
+                ) : citas.length === 0 ? (
                     <p>No tienes citas registradas.</p>
                 ) : (
                     <Table striped bordered responsive>

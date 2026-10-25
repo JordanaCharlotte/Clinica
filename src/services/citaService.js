@@ -50,6 +50,14 @@ export function modificarCita(id, cambios) {
   return lista.find((c) => c.id === id) ?? null
 }
 
+export function reprogramarCita(id, fecha, hora) {
+    return modificarCita(id, {
+        fecha,
+        hora,
+        estado: 'reprogramada'
+    })
+}
+
 export function obtenerCitaEnCurso() {
   const guardado = localStorage.getItem(CLAVE_EN_CURSO)
   if (guardado === null) {
