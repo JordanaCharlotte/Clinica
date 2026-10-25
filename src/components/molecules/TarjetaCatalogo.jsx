@@ -4,9 +4,7 @@ import EtiquetaModalidad from '../atoms/EtiquetaModalidad';
 import { Precio } from '../atoms/Precio';
 import Boton from '../atoms/Boton';
 
-// Molecula "TarjetaCatalogo": combina los atomos Etiqueta, EtiquetaModalidad, Precio y Boton.
-// Todos los datos llegan por props, no hay nada escrito a mano aqui adentro.
-// onVerDetalle es opcional: si no llega, el boton "Ver detalle" no se muestra.
+
 function TarjetaCatalogo(props) {
     return (
         <Card className="h-100 shadow-sm">
