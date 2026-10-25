@@ -10,8 +10,7 @@ export function PlantillaPublica(props) {
     <>
       <Navbar onNavegar={navigate}/>
       <main className="contenido">
-        {/* props.children es el contenido que cada página pone dentro de <PlantillaPublica> */}
-        {props.children}
+      {props.children}
       </main>
       <Footer onNavegar={navigate} />
     </>
