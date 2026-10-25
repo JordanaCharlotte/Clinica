@@ -3,13 +3,70 @@ import Inicio from './pages/Inicio';
 import Catalogo from './pages/Catalogo';
 import servicios from './data/servicios';
 
+// ---- Vicente ----
+import Nutricionistas from './pages/Nutricionistas';
+import Confirmacion from './pages/Confirmacion';
+import Resultado from './pages/Resultado';
+import AgendarCita from './pages/AgendarCita';
+
+// ---- Jordana ----
+import PlantillaSitio from './components/templates/PlantillaSitio';
+import PlantillaAdmin from './components/templates/PlantillaAdmin';
+import RutaProtegida from './components/organisms/RutaProtegida';
+import Login from './pages/Login';
+import Registro from './pages/Registro';
+import Nosotros from './pages/Nosotros';
+import Blog from './pages/Blog';
+import BlogDetalle from './pages/BlogDetalle';
+import Contacto from './pages/Contacto';
+import NoEncontrada from './pages/NoEncontrada';
+import Dashboard from './pages/admin/Dashboard';
+import Usuarios from './pages/admin/Usuarios';
+import UsuarioFormulario from './pages/admin/UsuarioFormulario';
+import UsuarioDetalle from './pages/admin/UsuarioDetalle';
+import Reportes from './pages/admin/Reportes';
+import Perfil from './pages/admin/Perfil';
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Inicio />} />
+        {/* Páginas de Jordana: PlantillaSitio les pone Navbar y Footer */}
+        <Route element={<PlantillaSitio />}>
+          <Route path="/" element={<Inicio />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/registro" element={<Registro />} />
+          <Route path="/nosotros" element={<Nosotros />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogDetalle />} />
+          <Route path="/contacto" element={<Contacto />} />
+          <Route path="*" element={<NoEncontrada />} />
+        </Route>
+
+        {/* Davis y Vicente: sus páginas ya traen PlantillaPublica adentro */}
         <Route path="/catalogo" element={<Catalogo servicios={servicios} />} />
         <Route path="/categoria/:nombre" element={<Catalogo servicios={servicios} />} />
+        <Route path="/nutricionistas" element={<Nutricionistas />} />
+
+        {/* Cita: solo con sesión iniciada (cliente o admin) */}
+        <Route element={<RutaProtegida />}>
+          <Route path="/confirmacion" element={<Confirmacion />} />
+          <Route path="/resultado/:id" element={<Resultado />} />
+          <Route path="/agendar" element={<AgendarCita />} />
+        </Route>
+
+        {/* Panel admin: solo con sesión y rol admin */}
+        <Route element={<RutaProtegida rol="admin" />}>
+          <Route path="/admin" element={<PlantillaAdmin />}>
+            <Route index element={<Dashboard />} />
+            <Route path="usuarios" element={<Usuarios />} />
+            <Route path="usuarios/nuevo" element={<UsuarioFormulario />} />
+            <Route path="usuarios/:id" element={<UsuarioDetalle />} />
+            <Route path="usuarios/:id/editar" element={<UsuarioFormulario />} />
+            <Route path="reportes" element={<Reportes />} />
+            <Route path="perfil" element={<Perfil />} />
+          </Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   );
