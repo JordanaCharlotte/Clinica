@@ -1,6 +1,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Inicio from './pages/Inicio';
 import Catalogo from './pages/Catalogo';
+import CatalogoAdmin from './pages/admin/CatalogoAdmin'
+import CategoriasAdmin from './pages/admin/CategoriasAdmin'
+import ItemsCriticosAdmin from './pages/admin/ItemsCriticosAdmin'
+import DetalleServicio from './pages/DetalleServicio'
+import ServicioFormularioAdmin from './pages/admin/ServicioFormularioAdmin'
+import Ofertas from './pages/Ofertas'
+
+
 
 // ---- Vicente ----
 import Nutricionistas from './pages/Nutricionistas';
@@ -46,12 +54,16 @@ function App() {
           <Route path="/blog/:slug" element={<BlogDetalle />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="*" element={<NoEncontrada />} />
+          
         </Route>
 
         {/* Davis y Vicente: sus páginas ya traen PlantillaPublica adentro */}
         <Route path="/catalogo" element={<Catalogo />} />
         <Route path="/categoria/:nombre" element={<Catalogo />} />
+        <Route path="/servicio/:id" element={<DetalleServicio />} />
+        <Route path="/ofertas" element={<Ofertas />} />
         <Route path="/nutricionistas" element={<Nutricionistas />} />
+
 
         {/* Cita: solo con sesión iniciada (cliente o admin) */}
         <Route element={<RutaProtegida />}>
@@ -59,6 +71,7 @@ function App() {
           <Route path="/resultado/:id" element={<Resultado />} />
           <Route path="/agendar" element={<AgendarCita />} />
           <Route path="/mis-citas" element={<MisCitas />} />
+          
         </Route>
 
         {/* Panel admin: solo con sesión y rol admin */}
@@ -74,6 +87,11 @@ function App() {
             <Route path="citas" element={<AdminCitas />} />
             <Route path="comprobante/:id" element={<ComprobanteAdmin />} />
             <Route path="historial" element={<HistorialSolicitudesAdmin />} />
+            <Route path="catalogo" element={<CatalogoAdmin />} />
+            <Route path="categorias" element={<CategoriasAdmin />} />
+            <Route path="criticos" element={<ItemsCriticosAdmin />} />
+            <Route path="catalogo/nuevo" element={<ServicioFormularioAdmin />}/>
+            <Route path="catalogo/:id/editar" element={<ServicioFormularioAdmin />}/>
           </Route>
         </Route>
       </Routes>
