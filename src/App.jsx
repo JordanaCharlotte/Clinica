@@ -1,13 +1,17 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Inicio from './pages/Inicio';
 import Catalogo from './pages/Catalogo';
-import servicios from './data/servicios';
 
 // ---- Vicente ----
 import Nutricionistas from './pages/Nutricionistas';
 import Confirmacion from './pages/Confirmacion';
 import Resultado from './pages/Resultado';
 import AgendarCita from './pages/AgendarCita';
+import MisCitas from './pages/MisCitas';
+import AdminCitas from './pages/admin/AdminCitas';
+import ComprobanteAdmin from './pages/admin/ComprobanteAdmin';
+import HistorialSolicitudesAdmin from './pages/admin/HistorialSolicitudesAdmin';
+import { ServiciosProvider } from './context/ServiciosContext';
 
 // ---- Jordana ----
 import PlantillaSitio from './components/templates/PlantillaSitio';
@@ -29,6 +33,7 @@ import Perfil from './pages/admin/Perfil';
 
 function App() {
   return (
+    <ServiciosProvider>
     <BrowserRouter>
       <Routes>
         {/* Páginas de Jordana: PlantillaSitio les pone Navbar y Footer */}
@@ -44,8 +49,8 @@ function App() {
         </Route>
 
         {/* Davis y Vicente: sus páginas ya traen PlantillaPublica adentro */}
-        <Route path="/catalogo" element={<Catalogo servicios={servicios} />} />
-        <Route path="/categoria/:nombre" element={<Catalogo servicios={servicios} />} />
+        <Route path="/catalogo" element={<Catalogo />} />
+        <Route path="/categoria/:nombre" element={<Catalogo />} />
         <Route path="/nutricionistas" element={<Nutricionistas />} />
 
         {/* Cita: solo con sesión iniciada (cliente o admin) */}
@@ -53,6 +58,7 @@ function App() {
           <Route path="/confirmacion" element={<Confirmacion />} />
           <Route path="/resultado/:id" element={<Resultado />} />
           <Route path="/agendar" element={<AgendarCita />} />
+          <Route path="/mis-citas" element={<MisCitas />} />
         </Route>
 
         {/* Panel admin: solo con sesión y rol admin */}
@@ -65,10 +71,14 @@ function App() {
             <Route path="usuarios/:id/editar" element={<UsuarioFormulario />} />
             <Route path="reportes" element={<Reportes />} />
             <Route path="perfil" element={<Perfil />} />
+            <Route path="citas" element={<AdminCitas />} />
+            <Route path="comprobante/:id" element={<ComprobanteAdmin />} />
+            <Route path="historial" element={<HistorialSolicitudesAdmin />} />
           </Route>
         </Route>
       </Routes>
     </BrowserRouter>
+    </ServiciosProvider>
   );
 }
 

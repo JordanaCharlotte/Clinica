@@ -54,7 +54,13 @@ function Confirmacion() {
         }
 
         //aca la regla de teleconsulta: solo se revisa si el correo es valido
-        const errR = validarTeleconsulta(servicio.id, citasDeUsuario(correo))
+        // La regla compara códigos (CN001, CN004...), así que las citas guardadas
+        // se pasan con el código de su servicio.
+        const previas = citasDeUsuario(correo).map((c) => ({
+            ...c,
+            servicioId: servicios.find((s) => String(s.id) === String(c.servicioId))?.codigo ?? c.servicioId,
+        }))
+        const errR = validarTeleconsulta(servicio.codigo, previas)
         setErrorRegla(errR)
         if (errR !== '') {
             return

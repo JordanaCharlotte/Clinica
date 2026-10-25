@@ -10,7 +10,8 @@ const ENLACES = [
   // { to: '/admin/catalogo', texto: 'Catálogo' },        // Davis
   // { to: '/admin/categorias', texto: 'Categorías' },    // Davis
   // { to: '/admin/criticos', texto: 'Ítems críticos' },  // Davis
-  // { to: '/admin/solicitudes', texto: 'Solicitudes' },  // Vicente
+  { to: '/admin/citas', texto: 'Solicitudes' },
+  { to: '/admin/historial', texto: 'Historial' },
   { to: '/admin/usuarios', texto: 'Usuarios' },
   { to: '/admin/reportes', texto: 'Reportes' },
   { to: '/admin/perfil', texto: 'Mi perfil' },
@@ -18,10 +19,22 @@ const ENLACES = [
 
 // Estructura del panel: barra de arriba, menú lateral y el contenido en <Outlet />.
 // En celular el menú se abre y cierra con el botón "Menú".
-export default function PlantillaAdmin() {
+export default function PlantillaAdmin({ children, titulo }) {
   const { usuario, logout } = useAuth();
   const navigate = useNavigate();
   const [menuAbierto, setMenuAbierto] = useState(false);
+
+  // Las páginas de Davis usan <PlantillaAdmin titulo="...">contenido</PlantillaAdmin>.
+  // Como ya están dentro del layout del panel (ruta /admin), aquí solo se muestra
+  // el título y el contenido, para no repetir la barra y el menú.
+  if (children !== undefined) {
+    return (
+      <>
+        {titulo && <h1 className="h3 mb-4">{titulo}</h1>}
+        {children}
+      </>
+    );
+  }
 
   function salir() {
     logout();
