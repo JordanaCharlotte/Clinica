@@ -63,10 +63,21 @@ export function AuthProvider({ children }) {
 }
 
 // Hook para leer el contexto. Avisa si se usa fuera del AuthProvider.
+const SIN_SESION = {
+  usuario: null,
+  estaAutenticado: false,
+  esAdmin: false,
+  login: () => ({ ok: false, error: 'No hay AuthProvider.' }),
+  registrar: () => ({ ok: false, error: 'No hay AuthProvider.' }),
+  logout: () => {},
+  actualizarPerfil: () => ({ ok: false, error: 'No hay AuthProvider.' }),
+};
+
 export function useAuth() {
   const contexto = useContext(AuthContext);
-  if (!contexto) throw new Error('useAuth debe usarse dentro de <AuthProvider>.');
-  return contexto;
+  // Fuera del AuthProvider (por ejemplo, en pruebas de otros componentes)
+  // se responde "sin sesión" en vez de romper la página.
+  return contexto ?? SIN_SESION;
 }
 
 export default AuthContext;
