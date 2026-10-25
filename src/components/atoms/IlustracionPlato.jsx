@@ -13,7 +13,7 @@ export default function IlustracionPlato({ className = '' }) {
       <title id="plato-titulo">Plato equilibrado: mitad verduras, un cuarto proteína y un cuarto carbohidratos</title>
 
       {/* Mantel */}
-      <ellipse cx="220" cy="210" rx="200" ry="182" fill="#E7F0FB" />
+      <ellipse cx="220" cy="210" rx="200" ry="182" fill="#E3F2EC" />
 
       {/* Tenedor */}
       <g fill="#FFFFFF" opacity="0.95">
@@ -31,8 +31,8 @@ export default function IlustracionPlato({ className = '' }) {
 
       {/* Plato */}
       <circle cx="220" cy="205" r="160" fill="#FFFFFF" />
-      <circle cx="220" cy="205" r="160" fill="none" stroke="#D3E0F2" strokeWidth="2" />
-      <circle cx="220" cy="205" r="134" fill="#F5F8FC" />
+      <circle cx="220" cy="205" r="160" fill="none" stroke="#CFE3DA" strokeWidth="2" />
+      <circle cx="220" cy="205" r="134" fill="#F7FAF8" />
 
       {/* ½ verduras (izquierda) */}
       <path d="M220 75 A130 130 0 0 0 220 335 Z" fill="#6DBE8C" />
@@ -46,7 +46,7 @@ export default function IlustracionPlato({ className = '' }) {
         <circle cx="150" cy="248" r="10" />
         <circle cx="196" cy="128" r="9" />
       </g>
-      <g fill="#F5F8FC" opacity="0.7">
+      <g fill="#F7FAF8" opacity="0.7">
         <circle cx="181" cy="201" r="3" />
         <circle cx="147" cy="245" r="2.5" />
       </g>
@@ -77,7 +77,7 @@ export default function IlustracionPlato({ className = '' }) {
       <g>
         <path d="M352 22 L398 22 L392 92 L358 92 Z" fill="#FFFFFF" opacity="0.9" />
         <path d="M355 46 L395 46 L392 92 L358 92 Z" fill="#9FD3E6" />
-        <path d="M352 22 L398 22" stroke="#D3E0F2" strokeWidth="2" />
+        <path d="M352 22 L398 22" stroke="#CFE3DA" strokeWidth="2" />
       </g>
     </svg>
   );
