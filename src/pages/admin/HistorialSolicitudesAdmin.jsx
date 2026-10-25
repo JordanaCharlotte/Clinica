@@ -1,12 +1,15 @@
 import { Table } from 'react-bootstrap'
-import PlantillaAdmin from '../../components/templates/PlantillaAdmin'
 import { obtenerCitas } from '../../services/citaService'
 
 function HistorialSolicitudesAdmin() {
     const citas = obtenerCitas()
 
     return (
-        <PlantillaAdmin titulo="Historial de solicitudes">
+        <>
+            <h1 className="h3 mb-4">
+                Historial de solicitudes
+            </h1>
+
             {citas.length === 0 ? (
                 <p>No hay solicitudes registradas.</p>
             ) : (
@@ -32,7 +35,7 @@ function HistorialSolicitudesAdmin() {
                     </tbody>
                 </Table>
             )}
-        </PlantillaAdmin>
+        </>
     )
 }
 

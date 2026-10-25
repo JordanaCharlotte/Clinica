@@ -1,6 +1,5 @@
 import { Card } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
-import PlantillaAdmin from '../../components/templates/PlantillaAdmin'
 import { obtenerCita } from '../../services/citaService'
 
 function ComprobanteAdmin() {
@@ -9,14 +8,16 @@ function ComprobanteAdmin() {
 
     if (!cita) {
         return (
-            <PlantillaAdmin titulo="Comprobante">
+            <>
+            <h1 className="h3 mb-4">Comprobante</h1>
                 <p>No se encontró la solicitud.</p>
-            </PlantillaAdmin>
+            </>
         )
     }
 
     return (
-        <PlantillaAdmin titulo="Comprobante de solicitud">
+        <>
+        <h1 className="h3 mb-4">Comprobante de solicitud</h1>
             <Card>
                 <Card.Body>
                     <p>
@@ -49,7 +50,7 @@ function ComprobanteAdmin() {
                     </p>
                 </Card.Body>
             </Card>
-        </PlantillaAdmin>
+        </>
     )
 }
 
