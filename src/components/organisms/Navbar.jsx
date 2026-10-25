@@ -23,6 +23,8 @@ function Navbar(props) {
           <Nav className="ms-auto">
             <Nav.Link href="/" onClick={(e) => ir(e, '/')}>Inicio</Nav.Link>
             <Nav.Link href="/catalogo" onClick={(e) => ir(e, '/catalogo')}>Catálogo</Nav.Link>
+            <Nav.Link href="/nutricionistas" onClick={(e) => ir(e, '/nutricionistas')}>Nutricionistas</Nav.Link>
+            <Nav.Link href="/agendar" onClick={(e) => ir(e, '/agendar')}>Agendar cita</Nav.Link>
             <Nav.Link href="/contacto" onClick={(e) => ir(e, '/contacto')}>Contacto</Nav.Link>
           </Nav>
         </NavbarBS.Collapse>
