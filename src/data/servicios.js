@@ -1,8 +1,3 @@
-// Datos de partida del catalogo de la Clinica NutriVida.
-// Salen del Excel "Catalogo_Clinica_NutriVida" (hoja Servicios y Planes).
-// "categoria" es el "Tipo" del Excel en version corta (Consulta, Plan, Evaluación, Taller).
-// OJO: precioAnterior y cupos NO vienen del Excel, son datos simulados para las
-// vistas de Ofertas (precio tachado) e Ítems críticos (pocos cupos).
 const servicios = [
   {
     id: 1,

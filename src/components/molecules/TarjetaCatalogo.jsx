@@ -4,8 +4,9 @@ import EtiquetaModalidad from '../atoms/EtiquetaModalidad';
 import { Precio } from '../atoms/Precio';
 import Boton from '../atoms/Boton';
 
-
 function TarjetaCatalogo(props) {
+    console.log("Revisando propiedades del servicio:", props);
+
     return (
         <Card className="h-100 shadow-sm">
             <Card.Body className="d-flex flex-column">
