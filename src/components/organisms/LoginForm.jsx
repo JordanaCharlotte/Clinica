@@ -22,12 +22,12 @@ export default function LoginForm() {
   const sugerencia = sugerirCorreo(valores.correo);
 
   // Al enviar: valida, intenta iniciar sesión y si sale bien redirige.
-  function manejarEnvio(evento) {
+  async function manejarEnvio(evento) {
     evento.preventDefault();
     setErrorGeneral('');
     if (!validarTodo()) return;
 
-    const resultado = login(valores.correo, valores.password);
+    const resultado = await login(valores.correo, valores.password);
     if (!resultado.ok) {
       setErrorGeneral(resultado.error);
       return;

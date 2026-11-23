@@ -4,6 +4,8 @@
 
 import usuariosIniciales from '../data/usuarios';
 import { formatearRun, limpiarRun } from '../utils/validaciones';
+import { api } from './api';
+
 
 export const CLAVE_USUARIOS = 'clinica_usuarios';
 export const CLAVE_SESION = 'clinica_sesion';
@@ -161,15 +163,36 @@ function guardarSesion(usuario) {
   return sesion;
 }
 
-// Busca el usuario por correo y compara la contraseña.
-export function iniciarSesion(correo, password) {
-  const buscado = String(correo ?? '').trim().toLowerCase();
-  const usuario = leerUsuarios().find((u) => u.correo === buscado);
-  // Mismo mensaje para correo o contraseña incorrectos: no revela qué correos existen.
-  if (!usuario || usuario.password !== password) {
-    return { ok: false, error: 'Correo o contraseña incorrectos.' };
+export async function iniciarSesion(correo, password) {
+  try {
+    const respuesta = await api.post('/auth/login', {
+      correo,
+      password,
+    });
+
+    const datos = respuesta.data;
+    const sesion = guardarSesion(datos.usuario);
+
+    localStorage.setItem('token', datos.token);
+
+    return {
+      ok: true,
+      usuario: sesion,
+      token: datos.token,
+    };
+  } catch (error) {
+    if (error.response) {
+      return {
+        ok: false,
+        error: error.response.data.error || 'Correo o contraseña incorrectos.',
+      };
+    }
+
+    return {
+      ok: false,
+      error: 'No fue posible conectar con el backend.',
+    };
   }
-  return { ok: true, usuario: guardarSesion(usuario) };
 }
 
 // Borra la sesión guardada.
