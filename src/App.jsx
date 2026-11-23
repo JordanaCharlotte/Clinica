@@ -39,6 +39,7 @@ import UsuarioDetalle from './pages/admin/UsuarioDetalle';
 import Reportes from './pages/admin/Reportes';
 import Perfil from './pages/admin/Perfil';
 
+
 function App() {
   return (
     <ServiciosProvider>
@@ -53,6 +54,7 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogDetalle />} />
           <Route path="/contacto" element={<Contacto />} />
+          <Route path="/mis-citas" element={<MisCitas />} />
           <Route path="*" element={<NoEncontrada />} />
           
         </Route>
