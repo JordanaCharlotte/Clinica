@@ -1,3 +1,5 @@
+import { api } from './api';
+
 const CLAVE = 'citas'
 const CLAVE_EN_CURSO = 'citaEnCurso'
 
@@ -19,24 +21,28 @@ function guardar(lista) {
 }
 
 
-export function obtenerCitas() {
-  return leer()
+export async function obtenerCitas() {
+  const respuesta = await api.get('/citas');
+  return respuesta.data;
 }
 
 
-export function obtenerCita(id) {
-  return leer().find((c) => c.id === id) ?? null
+export async function obtenerCita(id) {
+  const respuesta = await api.get('/citas/' + id);
+  return respuesta.data;
 }
 
 
-export function guardarCita(cita) {
-  const lista = leer()
+export async function guardarCita(cita) {
+  const datos = {
+    servicioId: Number(cita.servicioId),
+    nutricionistaId: cita.nutricionistaId,
+    fecha: cita.fecha,
+    hora: cita.hora,
+  };
 
-  const nuevoId = Math.max(0, ...lista.map((c) => c.id)) + 1
-
-  const nueva = { ...cita, id: nuevoId, estado: 'pendiente' }
-  guardar([...lista, nueva])
-  return nueva
+  const respuesta = await api.post('/citas', datos);
+  return respuesta.data;
 }
 
 

@@ -1,5 +1,9 @@
 export function validarObligatorio(valor, mensaje) {
-    return valor.trim() === '' ? mensaje : ''
+    if (valor === null || valor === undefined || valor === '') {
+        return mensaje
+    }
+
+    return String(valor).trim() === '' ? mensaje : ''
 }
 
 export function validarCorreo(correo) {

@@ -41,7 +41,7 @@ function Confirmacion() {
         )
     }
 
-    function confirmar(e) {
+    async function confirmar(e) {
         e.preventDefault()
         const errN = validarObligatorio(nombre, 'El nombre es obligatorio')
         const errC = validarCorreo(correo)
@@ -66,7 +66,7 @@ function Confirmacion() {
             return
         }
 
-        const cita = guardarCita({
+        const cita = await guardarCita({
             ...datos,
             servicioId: servicio.id,
             nutricionistaId: nutricionista.id,

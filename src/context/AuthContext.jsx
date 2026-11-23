@@ -10,9 +10,13 @@ export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(() => authService.obtenerSesion());
 
   // Inicia sesión y, si sale bien, actualiza el estado para que el Navbar cambie.
-  const login = useCallback((correo, password) => {
-    const resultado = authService.iniciarSesion(correo, password);
-    if (resultado.ok) setUsuario(resultado.usuario);
+  const login = useCallback(async (correo, password) => {
+    const resultado = await authService.iniciarSesion(correo, password);
+
+    if (resultado.ok) {
+      setUsuario(resultado.usuario);
+    }
+
     return resultado;
   }, []);
 
