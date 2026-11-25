@@ -1,5 +1,5 @@
 // Listado de usuarios del admin: buscar, filtrar por rol, ver, editar y eliminar.
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Alerta from '../../components/atoms/Alerta';
 import { useAuth } from '../../context/AuthContext';
@@ -8,7 +8,16 @@ import { eliminarUsuario, obtenerUsuarios } from '../../services/authService';
 export default function Usuarios() {
   const { usuario: sesion } = useAuth();
   const location = useLocation();
-  const [usuarios, setUsuarios] = useState(() => obtenerUsuarios());
+  const [usuarios, setUsuarios] = useState([]);
+  const [cargando, setCargando] = useState(true);
+
+  // Carga la lista desde el backend (GET /api/usuarios) al abrir la página.
+  useEffect(() => {
+    obtenerUsuarios().then((lista) => {
+      setUsuarios(lista);
+      setCargando(false);
+    });
+  }, []);
   const [busqueda, setBusqueda] = useState('');
   const [filtroRol, setFiltroRol] = useState('todos');
   const [porEliminar, setPorEliminar] = useState(null);
@@ -26,14 +35,14 @@ export default function Usuarios() {
   }, [usuarios, busqueda, filtroRol]);
 
   // Elimina después de confirmar en pantalla y vuelve a cargar la lista.
-  function confirmarEliminar(id) {
-    const resultado = eliminarUsuario(id);
+  async function confirmarEliminar(id) {
+    const resultado = await eliminarUsuario(id);
     setPorEliminar(null);
     if (!resultado.ok) {
       setMensaje({ tipo: 'danger', texto: resultado.error });
       return;
     }
-    setUsuarios(obtenerUsuarios());
+    setUsuarios(await obtenerUsuarios());
     setMensaje({ tipo: 'success', texto: 'Usuario eliminado.' });
   }
 
@@ -126,7 +135,7 @@ export default function Usuarios() {
             {visibles.length === 0 && (
               <tr>
                 <td colSpan={5} className="text-center text-body-secondary py-4">
-                  No hay usuarios que coincidan con la búsqueda.
+                  {cargando ? 'Cargando usuarios...' : 'No hay usuarios que coincidan con la búsqueda.'}
                 </td>
               </tr>
             )}

@@ -1,5 +1,5 @@
 // Página de reportes: citas por estado y nutricionista, ingresos por servicio y descarga en CSV.
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { obtenerUsuarios } from '../../services/authService';
 import { campo, obtenerCitas, obtenerServicios } from '../../services/fuentesDatos';
 import { aCSV, contarPor, formatearCLP, ingresosPor, ingresosTotales } from '../../services/reporteService';
@@ -32,7 +32,11 @@ function Barras({ titulo, filas, formato = (f) => f.cantidad, valor = (f) => f.c
 export default function Reportes() {
   const todasLasCitas = obtenerCitas();
   const servicios = obtenerServicios();
-  const usuarios = obtenerUsuarios();
+  const [usuarios, setUsuarios] = useState([]);
+  // Usuarios desde el backend (GET /api/usuarios).
+  useEffect(() => {
+    obtenerUsuarios().then(setUsuarios);
+  }, []);
   const [nutricionista, setNutricionista] = useState('todos');
 
   const nombresNutricionistas = [...new Set(todasLasCitas.map(campo.nutricionistaCita))];

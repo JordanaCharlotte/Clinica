@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import FormularioUsuario from '../../components/organisms/FormularioUsuario';
 import { actualizarUsuario, crearUsuario, obtenerUsuarioPorId } from '../../services/authService';
@@ -7,7 +8,19 @@ export default function UsuarioFormulario() {
   const { id } = useParams();
   const navigate = useNavigate();
   const esEdicion = Boolean(id);
-  const usuario = esEdicion ? obtenerUsuarioPorId(id) : null;
+  const [usuario, setUsuario] = useState(null);
+  const [cargando, setCargando] = useState(esEdicion);
+
+  // En modo edición, trae el usuario desde el backend.
+  useEffect(() => {
+    if (!esEdicion) return;
+    obtenerUsuarioPorId(id).then((encontrado) => {
+      setUsuario(encontrado);
+      setCargando(false);
+    });
+  }, [esEdicion, id]);
+
+  if (cargando) return <p className="text-center py-5">Cargando usuario...</p>;
 
   if (esEdicion && !usuario) {
     return (
@@ -21,8 +34,8 @@ export default function UsuarioFormulario() {
   }
 
   // Crea o actualiza según la URL. Si sale bien, vuelve al listado con un mensaje.
-  function guardar(datos) {
-    const resultado = esEdicion ? actualizarUsuario(id, datos) : crearUsuario(datos);
+  async function guardar(datos) {
+    const resultado = esEdicion ? await actualizarUsuario(id, datos) : await crearUsuario(datos);
     if (resultado.ok) {
       navigate('/admin/usuarios', {
         state: { mensaje: esEdicion ? 'Cambios guardados.' : `Usuario ${resultado.usuario.correo} creado.` },

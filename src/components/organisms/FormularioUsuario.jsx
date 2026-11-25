@@ -16,10 +16,10 @@ export default function FormularioUsuario({ usuarioInicial, onGuardar, onCancela
   const sugerencia = sugerirCorreo(valores.correo);
 
   // Si el servicio responde que el correo o RUN ya existe, se marca ese campo en rojo.
-  function manejarEnvio(evento) {
+  async function manejarEnvio(evento) {
     evento.preventDefault();
     if (!validarTodo()) return;
-    const resultado = onGuardar(valores);
+    const resultado = await onGuardar(valores);
     if (resultado && !resultado.ok && resultado.campo) {
       setErrores({ ...errores, [resultado.campo]: resultado.error });
     }

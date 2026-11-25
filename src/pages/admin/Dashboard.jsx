@@ -1,4 +1,5 @@
 // Página principal del panel admin: tarjetas con totales y últimas solicitudes.
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { obtenerUsuarios } from '../../services/authService';
@@ -28,7 +29,11 @@ function Tarjeta({ titulo, valor, detalle, enlace }) {
 export default function Dashboard() {
   const { usuario } = useAuth();
   // Lee los datos de los tres módulos: usuarios (Jordana), servicios (Davis) y citas (Vicente).
-  const usuarios = obtenerUsuarios();
+  const [usuarios, setUsuarios] = useState([]);
+  // Usuarios desde el backend (GET /api/usuarios).
+  useEffect(() => {
+    obtenerUsuarios().then(setUsuarios);
+  }, []);
   const servicios = obtenerServicios();
   const citas = obtenerCitas();
   const nutricionistas = obtenerNutricionistas();
