@@ -24,9 +24,6 @@ export default function Login() {
               <LoginForm />
             </div>
           </div>
-          <p className="small text-body-secondary text-center mt-3">
-            Cuentas de prueba: admin@clinica.cl / Admin123 · camila@correo.cl / Cliente123
-          </p>
         </div>
       </div>
     </section>
