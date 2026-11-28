@@ -94,7 +94,8 @@ export async function registrarUsuario(datos) {
 // Si se pidió rol admin, se asigna después con PUT /usuarios/:id.
 export async function crearUsuario(datos) {
   try {
-    const respuesta = await api.post('/auth/register', datos);
+    // El backend exige aceptar los términos; al crear desde el panel admin se marca automáticamente.
+    const respuesta = await api.post('/auth/register', { ...datos, aceptaTerminos: true });
     let usuario = respuesta.data.usuario;
     if (datos.rol === 'admin') {
       const cambio = await api.put('/usuarios/' + usuario.id, { ...usuario, rol: 'admin' });
