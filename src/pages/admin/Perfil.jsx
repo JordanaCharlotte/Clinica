@@ -21,12 +21,12 @@ export default function Perfil() {
   );
 
   // confirmarPassword solo sirve para validar, por eso no se manda a guardar.
-  function manejarEnvio(evento) {
+  async function manejarEnvio(evento) {
     evento.preventDefault();
     setMensaje(null);
     if (!validarTodo()) return;
     const { confirmarPassword: _c, ...cambios } = valores;
-    const resultado = actualizarPerfil(cambios);
+    const resultado = await actualizarPerfil(cambios);
     if (resultado.ok) {
       setMensaje({ tipo: 'success', texto: 'Tu perfil se actualizó.' });
       setValores({ ...valores, password: '', confirmarPassword: '' });

@@ -1,14 +1,12 @@
 // Servicio de usuarios y sesión.
-// Mientras no exista backend (Evaluación 3), los datos viven en localStorage.
+// Evaluación 3: los usuarios viven en el backend (PostgreSQL en AWS RDS) y se consultan por la API REST.
+// En localStorage solo se guardan la sesión (datos básicos, sin contraseña) y el token JWT.
 // Ningún método devuelve la contraseña hacia los componentes.
 
-import usuariosIniciales from '../data/usuarios';
-import { formatearRun, limpiarRun } from '../utils/validaciones';
 import { api } from './api';
 
-
-export const CLAVE_USUARIOS = 'clinica_usuarios';
 export const CLAVE_SESION = 'clinica_sesion';
+export const CLAVE_TOKEN = 'token';
 
 // Lee una clave de localStorage y la convierte de texto JSON a objeto.
 function leer(clave, valorPorDefecto) {
@@ -25,132 +23,114 @@ function guardar(clave, valor) {
   localStorage.setItem(clave, JSON.stringify(valor));
 }
 
-// Lista completa (con contraseñas), solo para uso interno del servicio.
-function leerUsuarios() {
-  const guardados = leer(CLAVE_USUARIOS, null);
-  if (Array.isArray(guardados)) return guardados;
-  guardar(CLAVE_USUARIOS, usuariosIniciales);
-  return [...usuariosIniciales];
-}
-
-// Devuelve una copia del usuario sin la contraseña, para no mandarla a las páginas.
-function sinPassword(usuario) {
-  if (!usuario) return null;
-  const { password: _omitida, ...resto } = usuario;
-  return resto;
-}
-
-// Limpia los datos antes de guardar: RUN con formato, correo en minúscula, sin espacios de más.
-function normalizar(datos) {
-  return {
-    ...datos,
-    run: formatearRun(datos.run ?? ''),
-    nombre: String(datos.nombre ?? '').trim(),
-    apellidos: String(datos.apellidos ?? '').trim(),
-    correo: String(datos.correo ?? '').trim().toLowerCase(),
-    telefono: String(datos.telefono ?? '').replace(/\s/g, ''),
-  };
-}
-
-// ---------- Usuarios (CRUD del admin) ----------
-
-// Lista de usuarios para el admin (sin contraseñas).
-export function obtenerUsuarios() {
-  return leerUsuarios().map(sinPassword);
-}
-
-// Busca un usuario por su id (se compara como texto porque en la URL llega como string).
-export function obtenerUsuarioPorId(id) {
-  return sinPassword(leerUsuarios().find((u) => String(u.id) === String(id)));
-}
-
-// Revisa si el correo ya está usado. excluirId sirve al editar, para no chocar consigo mismo.
-export function existeCorreo(correo, excluirId = null) {
-  const buscado = String(correo ?? '').trim().toLowerCase();
-  return leerUsuarios().some(
-    (u) => u.correo === buscado && String(u.id) !== String(excluirId),
-  );
-}
-
-// Igual que existeCorreo, pero con el RUN.
-export function existeRun(run, excluirId = null) {
-  const buscado = limpiarRun(run);
-  return leerUsuarios().some(
-    (u) => limpiarRun(u.run) === buscado && String(u.id) !== String(excluirId),
-  );
-}
-
-// Crea un usuario nuevo. El id es el mayor que exista + 1.
-// Devuelve { ok, usuario } o { ok: false, error, campo } para marcar el campo con problema.
-export function crearUsuario(datos) {
-  const usuarios = leerUsuarios();
-  const nuevo = normalizar(datos);
-  if (existeCorreo(nuevo.correo)) return { ok: false, error: 'Ya existe una cuenta con ese correo.', campo: 'correo' };
-  if (existeRun(nuevo.run)) return { ok: false, error: 'Ya existe una cuenta con ese RUN.', campo: 'run' };
-
-  const id = usuarios.reduce((max, u) => Math.max(max, Number(u.id) || 0), 0) + 1;
-  const usuario = {
-    id,
-    run: nuevo.run,
-    nombre: nuevo.nombre,
-    apellidos: nuevo.apellidos,
-    correo: nuevo.correo,
-    telefono: nuevo.telefono,
-    password: datos.password,
-    rol: datos.rol === 'admin' ? 'admin' : 'cliente',
-  };
-  guardar(CLAVE_USUARIOS, [...usuarios, usuario]);
-  return { ok: true, usuario: sinPassword(usuario) };
-}
-
-// Registro público: siempre crea clientes, aunque alguien intente mandar rol admin.
-export function registrarUsuario(datos) {
-  return crearUsuario({ ...datos, rol: 'cliente' });
-}
-
-// Edita un usuario existente y guarda la lista completa de nuevo.
-export function actualizarUsuario(id, cambios) {
-  const usuarios = leerUsuarios();
-  const indice = usuarios.findIndex((u) => String(u.id) === String(id));
-  if (indice === -1) return { ok: false, error: 'El usuario no existe.' };
-
-  const actual = usuarios[indice];
-  const datos = normalizar({ ...actual, ...cambios });
-  if (existeCorreo(datos.correo, id)) return { ok: false, error: 'Ya existe una cuenta con ese correo.', campo: 'correo' };
-  if (existeRun(datos.run, id)) return { ok: false, error: 'Ya existe una cuenta con ese RUN.', campo: 'run' };
-
-  const actualizado = {
-    ...actual,
-    run: datos.run,
-    nombre: datos.nombre,
-    apellidos: datos.apellidos,
-    correo: datos.correo,
-    telefono: datos.telefono,
-    rol: cambios.rol ? (cambios.rol === 'admin' ? 'admin' : 'cliente') : actual.rol,
-    // Contraseña vacía = mantener la actual.
-    password: cambios.password ? cambios.password : actual.password,
-  };
-  usuarios[indice] = actualizado;
-  guardar(CLAVE_USUARIOS, usuarios);
-
-  // Si se editó a quien tiene la sesión abierta, se refresca la sesión.
-  const sesion = obtenerSesion();
-  if (sesion && String(sesion.id) === String(id)) guardarSesion(actualizado);
-
-  return { ok: true, usuario: sinPassword(actualizado) };
-}
-
-// Borra un usuario, pero no deja borrar al único administrador.
-export function eliminarUsuario(id) {
-  const usuarios = leerUsuarios();
-  const usuario = usuarios.find((u) => String(u.id) === String(id));
-  if (!usuario) return { ok: false, error: 'El usuario no existe.' };
-  const admins = usuarios.filter((u) => u.rol === 'admin');
-  if (usuario.rol === 'admin' && admins.length === 1) {
-    return { ok: false, error: 'No puedes eliminar al único administrador.' };
+// Convierte un error de axios en { ok: false, error, campo, estado } para mostrarlo en los formularios.
+function errorDeApi(error, mensajePorDefecto) {
+  if (!error?.response) {
+    return { ok: false, error: 'No fue posible conectar con el backend.', estado: 0 };
   }
-  guardar(CLAVE_USUARIOS, usuarios.filter((u) => String(u.id) !== String(id)));
-  return { ok: true };
+  const estado = error.response.status;
+  const datos = error.response.data ?? {};
+  // El backend responde 400 con { errores } cuando falla una validación.
+  if (datos.errores) {
+    if (Array.isArray(datos.errores)) {
+      const primero = datos.errores[0];
+      const mensaje = typeof primero === 'string' ? primero : primero?.mensaje ?? primero?.error;
+      return { ok: false, error: mensaje ?? mensajePorDefecto, campo: primero?.campo, estado };
+    }
+    const [campo, mensaje] = Object.entries(datos.errores)[0] ?? [];
+    return { ok: false, error: mensaje ?? mensajePorDefecto, campo, estado };
+  }
+  return { ok: false, error: datos.error ?? mensajePorDefecto, campo: datos.campo, estado };
+}
+
+// Si el backend responde 401 a una petición que llevaba token (vencido o inválido),
+// se borra la sesión y se manda al login. Así no queda una sesión "fantasma" en el navegador.
+api.interceptors.response.use(
+  (respuesta) => respuesta,
+  (error) => {
+    const llevabaToken = Boolean(error.config?.headers?.Authorization);
+    const esValidacionInicial = String(error.config?.url ?? '').includes('/auth/me');
+    if (error.response?.status === 401 && llevabaToken && !esValidacionInicial) {
+      cerrarSesion();
+      if (window.location.pathname !== '/login') window.location.assign('/login');
+    }
+    return Promise.reject(error);
+  },
+);
+
+// ---------- Usuarios (CRUD del admin, contra la API) ----------
+
+// GET /api/usuarios (solo admin). Devuelve la lista, o [] si algo falla.
+export async function obtenerUsuarios() {
+  try {
+    const respuesta = await api.get('/usuarios');
+    return Array.isArray(respuesta.data) ? respuesta.data : [];
+  } catch (error) {
+    console.error('No se pudo cargar la lista de usuarios:', errorDeApi(error, '').error);
+    return [];
+  }
+}
+
+// El backend no tiene GET /usuarios/:id, así que se busca dentro de la lista.
+export async function obtenerUsuarioPorId(id) {
+  const usuarios = await obtenerUsuarios();
+  return usuarios.find((u) => String(u.id) === String(id)) ?? null;
+}
+
+// Registro público: POST /api/auth/register. El backend siempre lo crea como cliente,
+// guarda la contraseña con bcrypt y devuelve el usuario y su token, así queda con la sesión iniciada.
+export async function registrarUsuario(datos) {
+  try {
+    const respuesta = await api.post('/auth/register', datos);
+    const { usuario, token } = respuesta.data;
+    localStorage.setItem(CLAVE_TOKEN, token);
+    return { ok: true, usuario: guardarSesion(usuario), token };
+  } catch (error) {
+    return errorDeApi(error, 'No se pudo crear la cuenta.');
+  }
+}
+
+// El admin crea un usuario: POST /auth/register sin guardar el token (la sesión sigue siendo la del admin).
+// Si se pidió rol admin, se asigna después con PUT /usuarios/:id.
+export async function crearUsuario(datos) {
+  try {
+    // El backend exige aceptar los términos; al crear desde el panel admin se marca automáticamente.
+    const respuesta = await api.post('/auth/register', { ...datos, confirmarPassword: datos.password, aceptaTerminos: true });
+    let usuario = respuesta.data.usuario;
+    if (datos.rol === 'admin') {
+      const cambio = await api.put('/usuarios/' + usuario.id, { ...usuario, rol: 'admin' });
+      usuario = cambio.data;
+    }
+    return { ok: true, usuario };
+  } catch (error) {
+    return errorDeApi(error, 'No se pudo crear el usuario.');
+  }
+}
+
+// PUT /api/usuarios/:id (solo admin). Contraseña vacía = mantener la actual.
+export async function actualizarUsuario(id, cambios) {
+  const datos = { ...cambios };
+  if (!datos.password) delete datos.password;
+  try {
+    const respuesta = await api.put('/usuarios/' + id, datos);
+    const usuario = respuesta.data;
+    // Si se editó a quien tiene la sesión abierta, se refresca la sesión.
+    const sesion = obtenerSesion();
+    if (sesion && String(sesion.id) === String(id)) guardarSesion(usuario);
+    return { ok: true, usuario };
+  } catch (error) {
+    return errorDeApi(error, 'No se pudieron guardar los cambios.');
+  }
+}
+
+// DELETE /api/usuarios/:id (solo admin). El backend no deja borrar al único administrador.
+export async function eliminarUsuario(id) {
+  try {
+    await api.delete('/usuarios/' + id);
+    return { ok: true };
+  } catch (error) {
+    return errorDeApi(error, 'No se pudo eliminar el usuario.');
+  }
 }
 
 // ---------- Sesión ----------
@@ -163,45 +143,41 @@ function guardarSesion(usuario) {
   return sesion;
 }
 
+// POST /api/auth/login: devuelve el usuario y el token JWT.
 export async function iniciarSesion(correo, password) {
   try {
-    const respuesta = await api.post('/auth/login', {
-      correo,
-      password,
-    });
-
+    const respuesta = await api.post('/auth/login', { correo, password });
     const datos = respuesta.data;
     const sesion = guardarSesion(datos.usuario);
-
-    localStorage.setItem('token', datos.token);
-
-    return {
-      ok: true,
-      usuario: sesion,
-      token: datos.token,
-    };
+    localStorage.setItem(CLAVE_TOKEN, datos.token);
+    return { ok: true, usuario: sesion, token: datos.token };
   } catch (error) {
     if (error.response) {
-      return {
-        ok: false,
-        error: error.response.data.error || 'Correo o contraseña incorrectos.',
-      };
+      return { ok: false, error: error.response.data.error || 'Correo o contraseña incorrectos.' };
     }
-
-    return {
-      ok: false,
-      error: 'No fue posible conectar con el backend.',
-    };
+    return { ok: false, error: 'No fue posible conectar con el backend.' };
   }
 }
 
-// Borra la sesión guardada.
-export function cerrarSesion() {
-  localStorage.removeItem(CLAVE_SESION);
+// GET /api/auth/me: confirma con el backend que el token sigue siendo válido (se usa al recargar).
+export async function obtenerUsuarioActual() {
+  try {
+    const respuesta = await api.get('/auth/me');
+    return { ok: true, usuario: guardarSesion(respuesta.data) };
+  } catch (error) {
+    return errorDeApi(error, 'La sesión no es válida.');
+  }
 }
 
-// Devuelve el usuario con sesión abierta o null.
+// Borra la sesión y el token.
+export function cerrarSesion() {
+  localStorage.removeItem(CLAVE_SESION);
+  localStorage.removeItem(CLAVE_TOKEN);
+}
+
+// Devuelve el usuario con sesión abierta o null. Sin token no hay sesión.
 export function obtenerSesion() {
+  if (!localStorage.getItem(CLAVE_TOKEN)) return null;
   return leer(CLAVE_SESION, null);
 }
 

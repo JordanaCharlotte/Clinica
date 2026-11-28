@@ -1,12 +1,23 @@
 // Página /admin/usuarios/:id: datos del usuario y sus citas.
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { obtenerUsuarioPorId } from '../../services/authService';
 import { campo, obtenerCitas } from '../../services/fuentesDatos';
 
 export default function UsuarioDetalle() {
   const { id } = useParams();
-  const usuario = obtenerUsuarioPorId(id);
+  const [usuario, setUsuario] = useState(null);
+  const [cargando, setCargando] = useState(true);
+
+  // Busca el usuario en el backend.
+  useEffect(() => {
+    obtenerUsuarioPorId(id).then((encontrado) => {
+      setUsuario(encontrado);
+      setCargando(false);
+    });
+  }, [id]);
+
+  if (cargando) return <p className="text-center py-5">Cargando usuario...</p>;
 
   if (!usuario) {
     return (

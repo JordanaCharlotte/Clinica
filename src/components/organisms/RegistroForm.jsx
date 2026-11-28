@@ -41,14 +41,14 @@ export default function RegistroForm() {
   }
 
   // Valida todo, registra y manda al inicio con un mensaje de bienvenida.
-  function manejarEnvio(evento) {
+  async function manejarEnvio(evento) {
     evento.preventDefault();
     setErrorGeneral('');
     if (!validarTodo()) {
       setErrorGeneral('Revisa los campos marcados en rojo.');
       return;
     }
-    const resultado = registrar(valores);
+    const resultado = await registrar(valores);
     if (!resultado.ok) {
       // Correo o RUN repetido: el error se muestra en el campo que corresponde.
       if (resultado.campo) setErrores({ ...errores, [resultado.campo]: resultado.error });
